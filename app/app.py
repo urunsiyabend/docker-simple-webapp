@@ -1,17 +1,22 @@
-"""Simple Flask web server with a single GET endpoint."""
+# app/app.py
+from flask import Flask, Response
 
-from flask import Flask
-
-# Initialize Flask application
 app = Flask(__name__)
-
 
 @app.route("/")
 def hello():
-    """Return a simple greeting message."""
     return "Hello World."
 
+@app.route("/health")
+def health():
+    # livenessProbe => 200 OK
+    return Response("healthy\n", mimetype="text/plain")
+
+@app.route("/ready")
+def ready():
+    # readinessProbe => 200 OK
+    return Response("ready\n", mimetype="text/plain")
 
 if __name__ == "__main__":
-    # Run the app on all interfaces, port 5000
-    app.run(host="0.0.0.0", port=5000)
+    # K8s servis/prob'ları 8080'e bakıyor
+    app.run(host="0.0.0.0", port=8080)

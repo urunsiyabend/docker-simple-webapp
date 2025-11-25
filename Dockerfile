@@ -1,18 +1,21 @@
-# Use lightweight Python base image
+# Dockerfile
 FROM python:3.12-slim
 
-# Set working directory
+# Daha öngörülebilir runtime
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
-# Copy requirements and install dependencies
+# Bağımlılıklar
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY app/ .
+# Uygulama kodu
+COPY app/ ./app
 
-# Expose the application port
-EXPOSE 5000
+# 8080'de dinle
+EXPOSE 8080
 
-# Run the Flask application
-CMD ["python", "app.py"]
+# Flask uygulamasını çalıştır
+CMD ["python", "app/app.py"]
